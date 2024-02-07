@@ -1,0 +1,27 @@
+name: aiog
+channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/pro
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+  - nvidia
+  - pyg
+dependencies:
+  - python=3.10.12
+  - pip=23.3.1
+  - cudatoolkit=11.8.0
+  - pytorch=2.1.1
+  - pytorch-cuda=11.8
+  - numpy=1.23.5
+  - pandas=2.0.3
+  - pyg=2.4.0
+  - pytorch-sparse=0.6.18
+  - torchmetrics=1.2.0
+  - tqdm=4.65.0
+  - terminaltables=3.1.10
+  - pip:
+    - git+https://github.com/Phoveran/fastargs.git@main#egg=fastargs

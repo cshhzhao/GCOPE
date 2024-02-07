@@ -22,9 +22,6 @@
         "seed": 777,
         "node_feature_dim": 100,
         "name":[cora, pubmed, wisconsin, squirrel],
-        "clustered": {
-            "num_parts": 500
-        }
     },
     "pretrain": {
         "method": "graphcl",

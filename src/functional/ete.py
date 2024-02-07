@@ -51,20 +51,12 @@ def run(
         results = ete(loaders, model)
         results.pop('model')
         all_results.append(results)
-    
-    # results = ete(loaders, model)
 
     import numpy as np
     for k in all_results[0].keys():
         print(f'{k}: {np.mean([r[k] for r in all_results]):.4f} ± {np.std([r[k] for r in all_results]):.4f}')
         
-    # log
     import os
-    # with open(os.path.join(save_dir, 'results.txt'), 'w') as f:
-    #     f.write(f'Acc: {results["acc"]:.4f}, F1: {results["f1"]:.4f}\n')
-
-    # with open(os.path.join(save_dir, dataset[0]+'_results.txt'), 'a+') as f:
-    #     f.write(f'End-To-End on All, Target Dataset: {dataset[0]}, Acc: {results["acc"]:.4f}, Auroc: {results["auroc"]:.4f}, F1: {results["f1"]:.4f}\n')
 
     with open(os.path.join(save_dir, dataset[0]+'_results.txt'), 'a+') as f:
         f.write('-------------------------------------------------\n')
@@ -85,16 +77,6 @@ def ete(
         weight_decay,
         epoch,
         ):
-    
-    # import random
-    # import numpy as np
-    # import torch
-    # seed = np.random.randint(0, 100000)
-    # random.seed(seed)
-    # np.random.seed(seed)
-    # torch.manual_seed(seed)
-    # torch.cuda.manual_seed(seed)
-    # torch.cuda.manual_seed_all(seed)    
     
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     model.to(device)

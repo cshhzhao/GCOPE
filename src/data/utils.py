@@ -74,7 +74,7 @@ def iterate_dataset_feature_tokens(data_names, cache_dir):
 
         yield data if isinstance(data, Data) else Data(**data)
 
-
+# including projection operation, SVD
 @param('data.node_feature_dim')
 def preprocess(data, node_feature_dim):
 
@@ -108,12 +108,8 @@ def loss_contrastive_learning(x1, x2):
     batch_size, _ = x1.size()
     x1_abs = x1.norm(dim=1)
     x2_abs = x2.norm(dim=1)
-
-    # 由于两张图的差异问题，并且维度大，可能导致矩阵值稀疏，即0值过多，从而导致相似性矩阵在执行爱因斯坦求和约定字符串eisum函数的时候导致值为0的情况，以及除法底数为0，从而导致了
-    # 相似性矩阵为nan值
-    # sim_matrix = torch.einsum('ik,jk->ij', x1, x2) / torch.einsum('i,j->ij', x1_abs, x2_abs)  #原始代码
     
-    sim_matrix = torch.einsum('ik,jk->ij', x1+1e-7, x2+1e-7) / torch.einsum('i,j->ij', x1_abs+1e-7, x2_abs+1e-7) #适配后的代码，避免两图差异过大，或者矩阵值稀疏带来的Nan值问题
+    sim_matrix = torch.einsum('ik,jk->ij', x1+1e-7, x2+1e-7) / torch.einsum('i,j->ij', x1_abs+1e-7, x2_abs+1e-7)
     
     if(True in sim_matrix.isnan()):
         print('Emerging nan value')
@@ -129,7 +125,6 @@ def loss_contrastive_learning(x1, x2):
         print('Emerging nan value')
 
     loss = pos_sim / ((sim_matrix.sum(dim=1) - pos_sim) + 1e-4)
-    # loss = pos_sim / (sim_matrix.sum(dim=1) - pos_sim)
     loss = - torch.log(loss).mean()
     if math.isnan(loss.item()):
         print("The value is NaN.")

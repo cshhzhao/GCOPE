@@ -15,7 +15,7 @@ Section('general', 'General Configs').params(
 )
 
 Section('model.backbone', 'Backbone General Configs').params(
-    model_type = Param(OneOf(['fagcn', 'bwgnn','gcn', 'gat']), default='fagcn', desc='backbone model to use'),
+    model_type = Param(OneOf(['fagcn']), default='fagcn', desc='backbone model to use'),
     hid_dim = Param(int, default=128),
 )
 
@@ -27,23 +27,9 @@ Section('model.backbone.fagcn', 'FAGCN Model Configs').enable_if(
     epsilon = Param(float, default=0.1),
 )
 
-Section('model.backbone.gcn', 'FAGCN Model Configs').enable_if(
-    lambda cfg: cfg['model.backbone.model_type'] == 'gcn'
-).params(
-    num_conv_layers = Param(int, default=2),
-    dropout = Param(float, default=0.2),
-)
-
-Section('model.backbone.gat', 'FAGCN Model Configs').enable_if(
-    lambda cfg: cfg['model.backbone.model_type'] == 'gat'
-).params(
-    num_conv_layers = Param(int, default=2),
-    dropout = Param(float, default=0.2),
-    head = Param(int, default=8),
-)
 
 Section('model.saliency', 'Saliency Model Configs').params(
-    model_type = Param(OneOf(['mlp', 'transformer', 'none']), default='transformer', desc='saliency model to use'),
+    model_type = Param(OneOf(['mlp', 'none']), default='none', desc='saliency model to use'),
 )
 
 Section('model.saliency.mlp').enable_if(
@@ -51,13 +37,6 @@ Section('model.saliency.mlp').enable_if(
 ).params(
     hid_dim = Param(int, default=4096),
     num_layers = Param(int, default=2),
-)
-
-Section('model.saliency.transformer').enable_if(
-    lambda cfg: cfg['model.saliency.model_type'] == 'transformer'
-).params(
-    token_hid_dim = Param(int, default=4096),
-    num_blocks = Param(int, default=2),
 )
 
 Section('model.answering', 'Answering General Configs').enable_if(
@@ -81,12 +60,6 @@ Section('data', 'Data Configs').params(
     node_feature_dim = Param(int, default=0, desc='0: use only structural information, >0: use node features, SVD if lower than the actual number of features else Padding'),
 )
 
-Section('data.clustered', 'Clustered Data Configs').enable_if(
-    lambda cfg: cfg['general.func'] in ['pretrain', 'prompt']
-).params(
-    num_parts = Param(int, default=0),
-)
-
 Section('data.supervised', 'Supervised Data Configs').enable_if(
     lambda cfg: cfg['general.func'] in ['adapt', 'ete']
 ).params(
@@ -101,37 +74,29 @@ Section('pretrain', 'Pretraining Configs').enable_if(
     weight_decay = Param(float, default=1e-5),
     epoch = Param(int, default=100),
     batch_size = Param(int, default=10),
-    noise_switch = Param(BoolAsInt(), default=False), #shell文件的输入是1或0
-    # cross_link = Param(BoolAsInt(), default=False),
-    cross_link = Param(int, default=0),
-    cross_link_ablation = Param(BoolAsInt(), default=False), # 用于cross_link的Ablation Study
-    dynamic_edge = Param(OneOf(['internal', 'external', 'internal_external', 'similarity', 'none']), default='none'), #用于控制virtual node的边和datasets相连接是可学习的还是固定的。
+    noise_switch = Param(BoolAsInt(), default=False), 
+    cross_link = Param(int, default=0), # cross_link=0 means no graph coordinator == isolated pretrain. cross_link>0 means includes graph coordinators == GCOPE
+    cross_link_ablation = Param(BoolAsInt(), default=False), # false means the graph coordinator has inter-dataset edges. if true, has no inter-dataset edges.
+    dynamic_edge = Param(OneOf(['internal', 'external', 'internal_external', 'similarity', 'none']), default='none'), # control inter-dataset edges
     dynamic_prune = Param(float, default=0.1),
     cl_init_method = Param(OneOf(['mean', 'sum', 'learnable', 'simple', 'none']), default='learnable'),
     split_method = Param(OneOf(['metis', 'RandomWalk']), default='RandomWalk'),
 )
-# internal指的是虚拟节点之和对应的单个dataset的点做相似性计算，连边，与其他的虚点和数据集不做操作。
-# external指的是虚拟节点和对应的dataset全连接，和其他的虚点以及数据集上的点是根据similarity的动态连边
-# internal_external指的是每个数据集都可能和任意数据集和任意虚点根据similarity动态相连
 
 Section('adapt', 'Adaptation Configs').enable_if(
     lambda cfg: cfg['general.func'] == 'adapt'
 ).params(
     repeat_times = Param(int, default=5),
-    method = Param(OneOf(['finetune', 'prompt','prog']), default='finetune'),
+    method = Param(OneOf(['finetune', 'prog']), default='finetune'),
     pretrained_file = Param(File(), required=True,default='storage/tmp/pretrained_model.pt'),
     epoch = Param(int, default=100),
     batch_size = Param(int, default=10),
 )
 
-Section('adapt.prompt', 'Prompt Configs').enable_if(
-    lambda cfg: cfg['adapt.method'] in ['prompt', 'prog']
+Section('adapt.prog', 'Prompt Configs').enable_if(
+    lambda cfg: cfg['adapt.method'] == 'prog'
 ).params(
     prompt_lr = Param(float, default=1e-4),
-    # prompt_weight_decay = Param(float, default=1e-5),
-    # ans_lr = Param(float, default=1e-4),
-    # ans_weight_decay = Param(float, default=1e-5),
-    # prompt_lr = Param(float, default=0.002),
     prompt_weight_decay = Param(float, default=1e-5),
     prompt_epoch = Param(int, default = 1),
     ans_lr = Param(float, default=1e-2),    
@@ -144,10 +109,7 @@ Section('adapt.prompt', 'Prompt Configs').enable_if(
     edge_attr_dim = Param(int, default = 0),
     prompting_target_batch_size = Param(int, default=128),
     prompting_source_batch_size = Param(int, default=2048),
-    # prompting_target_batch_size = Param(int, default=10),
-    # prompting_source_batch_size = Param(int, default=64),    
     cross_link = Param(BoolAsInt(), default=True),
-    source_dataset = Param(SubsetOf(['wisconsin', 'texas', 'cornell', 'chameleon', 'squirrel','cora', 'citeseer', 'pubmed', 'computers', 'photo',])),
 )
 
 Section('adapt.finetune', 'Finetune Configs').enable_if(

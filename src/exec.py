@@ -63,7 +63,7 @@ Section('data', 'Data Configs').params(
 Section('data.supervised', 'Supervised Data Configs').enable_if(
     lambda cfg: cfg['general.func'] in ['adapt', 'ete']
 ).params(
-    ratios = Param(ListOfFloats(), required=True, desc='train/tal/test split ratios'),
+    ratios = Param(ListOfFloats(),default='0.1,0.1,0.8', required=True, desc='train/tal/test split ratios'),
 )
 
 Section('pretrain', 'Pretraining Configs').enable_if(

@@ -21,13 +21,12 @@
     "data": {
         "seed": 777,
         "node_feature_dim": 100,
-        "name":[cora, pubmed, wisconsin, squirrel],
     },
     "pretrain": {
         "method": "graphcl",
         "learning_rate": 1e-04,
         "weight_decay": 1e-05,
-        "epoch": 1000,
+        "epoch": 100,
         "batch_size": 10,
         "cross_link":1,
         "cl_init_method": "learnable",

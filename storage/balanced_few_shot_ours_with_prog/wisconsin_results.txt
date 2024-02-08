@@ -1,0 +1,4 @@
+-------------------------------------------------
+prog on All, Target Dataset: wisconsin, acc: 0.6118 ± 0.0158
+prog on All, Target Dataset: wisconsin, auroc: 0.8870 ± 0.0056
+prog on All, Target Dataset: wisconsin, f1: 0.6445 ± 0.0218

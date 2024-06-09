@@ -1,2 +1,2 @@
 # GCOPE
-An anonymous repo for GCOPE method submitted to KDD 2024.
+Implementation of 'All in One and One for All: A Simple yet Effective Method towards Cross-domain Graph Pretraining' accepted for KDD'24.

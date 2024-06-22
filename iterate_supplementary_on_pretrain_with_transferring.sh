@@ -1,4 +1,4 @@
-learning_rates=(1e-2 1e-3 5e-3 1e-4 5e-4)
+learning_rates=(1e-2 5e-3 1e-3 1e-4 5e-4)
 target_datasets=("photo")
 
 backbone="fagcn"

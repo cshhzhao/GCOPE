@@ -27,6 +27,20 @@ Section('model.backbone.fagcn', 'FAGCN Model Configs').enable_if(
     epsilon = Param(float, default=0.1),
 )
 
+Section('model.backbone.gcn', 'GCN Model Configs').enable_if(
+    lambda cfg: cfg['model.backbone.model_type'] == 'gcn'
+).params(
+    num_conv_layers = Param(int, default=2),
+    dropout = Param(float, default=0.2),
+)
+
+Section('model.backbone.gat', 'GAT Model Configs').enable_if(
+    lambda cfg: cfg['model.backbone.model_type'] == 'gat'
+).params(
+    num_conv_layers = Param(int, default=2),
+    dropout = Param(float, default=0.2),
+    head = Param(int, default=8),
+)
 
 Section('model.saliency', 'Saliency Model Configs').params(
     model_type = Param(OneOf(['mlp', 'none']), default='none', desc='saliency model to use'),

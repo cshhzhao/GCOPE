@@ -9,6 +9,7 @@ def induced_graphs(data, smallest_size=10, largest_size=30):
     import numpy as np
 
     induced_graph_list = []
+    total_node_num = data.x.size(0)
 
     for index in range(data.x.size(0)):
         current_label = data.y[index].item()
@@ -39,7 +40,10 @@ def induced_graphs(data, smallest_size=10, largest_size=30):
 
         induced_graph = Data(x=x, edge_index=sub_edge_index, y=current_label)
         induced_graph_list.append(induced_graph)
-
+        if(index%1000==0):
+            print('生成的第{}/{}张子图数据'.format(index,total_node_num))
+    
+    print('生成了{}/{}张子图数据'.format(index,total_node_num))
     return induced_graph_list
 
 

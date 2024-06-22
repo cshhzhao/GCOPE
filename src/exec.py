@@ -15,7 +15,7 @@ Section('general', 'General Configs').params(
 )
 
 Section('model.backbone', 'Backbone General Configs').params(
-    model_type = Param(OneOf(['fagcn']), default='fagcn', desc='backbone model to use'),
+    model_type = Param(OneOf(['fagcn','gcn','bwgnn','gat']), default='fagcn', desc='backbone model to use'),
     hid_dim = Param(int, default=128),
 )
 

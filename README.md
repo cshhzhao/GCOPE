@@ -1,5 +1,16 @@
-# GCOPE
-Implementation of 'All in One and One for All: A Simple yet Effective Method towards Cross-domain Graph Pretraining' accepted for KDD'24.
+<h1 align="center"> All in One and One for All: A Simple yet Effective Method towards Cross-domain Graph Pretraining </a></h2>
+<h5 align="center"> If you like our project, please give us a star ⭐ on GitHub for the latest update.</h5>
+
+<h5 align="center">
+
+ ![](https://img.shields.io/badge/DSAIL%40HKUST-8A2BE2) ![GitHub stars](https://img.shields.io/github/stars/cshhzhao/GCOPE.svg)
+
+</h5>
+
+This is the official implementation of the following paper: 
+> **All in One and One for All: A Simple yet Effective Method towards Cross-domain Graph Pretraining** [[Paper](https://arxiv.org/pdf/2402.09834)], KDD'24
+> 
+> Haihong Zhao*, Aochuan Chen*, Xiangguo sun*†, Hong Cheng, Jia Li†
 
 ### Setup Environment
 
